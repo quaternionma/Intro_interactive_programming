@@ -26,7 +26,15 @@ def new_game():
     
     print "Number of remaining guesses is", number_of_guesses
     print ""
-        
+
+# helper function to check if there are remaining guesses    
+def remaining_guesses():
+    if number_of_guesses == 0:
+        print "You loose! You have no more guesses!\n"
+        new_game()
+    else:
+        return
+
 # define event handlers for control panel
 def range100():
     # button that changes the range to [0,100) and starts a new game 
@@ -42,18 +50,29 @@ def range1000():
         
 def input_guess(guess):
     # main game logic goes here	
-    print "Guess was", guess
     guess = int(guess)
-    print "secret", secret_number
+    print "Guess was", guess
+
+    if (upper_limit == 100) and (guess < 0 or guess > 99):
+        print "Allowed range is 0-99! Try again\n"
+        return
+    if (upper_limit == 1000) and (guess < 0 or guess > 999):
+        print "Allowed range is 0-999! Try again\n"
+        return
+    
+    #print "secret", secret_number #That's for debugging
+    
     global number_of_guesses
     if secret_number < guess:
-        number_of_guesses = number_of_guesses - 1
+        number_of_guesses = number_of_guesses - 1        
         print "Number of remaining guesses is", number_of_guesses
-        print "Lower!\n"        
+        print "Lower!\n"
+        remaining_guesses()
     if secret_number > guess:
-        number_of_guesses = number_of_guesses - 1
+        number_of_guesses = number_of_guesses - 1        
         print "Number of remaining guesses is", number_of_guesses
         print "Higher!\n"
+        remaining_guesses()
     if secret_number == guess:
         print "Correct!\n"
         new_game()
