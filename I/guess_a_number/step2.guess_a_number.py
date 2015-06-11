@@ -8,7 +8,8 @@ import math
 
 # initialize global variables used in your code here
 upper_limit = 100
-secret_number= 0 
+secret_number = 0
+number_of_guesses = 0
 
 # helper function to start and restart the game
 def new_game():        
@@ -17,8 +18,15 @@ def new_game():
     
     print "Game (re)-starts in the range: 0-" + str(upper_limit)
     
-
-
+    global number_of_guesses
+    if upper_limit == 100:
+        number_of_guesses = 7
+    elif upper_limit == 1000:
+        number_of_guesses = 10
+    
+    print "Number of remaining guesses is", number_of_guesses
+    print ""
+        
 # define event handlers for control panel
 def range100():
     # button that changes the range to [0,100) and starts a new game 
@@ -26,27 +34,30 @@ def range100():
     upper_limit = 100
     new_game()
     
-
 def range1000():
     # button that changes the range to [0,1000) and starts a new game     
     global upper_limit
     upper_limit = 1000
     new_game()
-    
-    
+        
 def input_guess(guess):
     # main game logic goes here	
     print "Guess was", guess
     guess = int(guess)
     print "secret", secret_number
+    global number_of_guesses
     if secret_number < guess:
-        print "Lower\n"     
+        number_of_guesses = number_of_guesses - 1
+        print "Number of remaining guesses is", number_of_guesses
+        print "Lower!\n"        
     if secret_number > guess:
-        print "Higher\n"
+        number_of_guesses = number_of_guesses - 1
+        print "Number of remaining guesses is", number_of_guesses
+        print "Higher!\n"
     if secret_number == guess:
         print "Correct!\n"
-     
-    
+        new_game()
+         
 # create frame
 frame = simplegui.create_frame("Guess the Number", 300, 300)
 
