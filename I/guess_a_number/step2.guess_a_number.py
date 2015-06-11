@@ -4,7 +4,6 @@
 
 import random
 import simplegui
-import math
 
 # initialize global variables used in your code here
 upper_limit = 100
@@ -16,7 +15,7 @@ def new_game():
     global secret_number    
     secret_number = random.randrange(0,upper_limit)
     
-    print "Game (re)-starts in the range: 0-" + str(upper_limit)
+    print "Game (re)-starts in the range: [0," + str(upper_limit)+")"
     
     global number_of_guesses
     if upper_limit == 100:
@@ -52,7 +51,8 @@ def input_guess(guess):
     # main game logic goes here	
     guess = int(guess)
     print "Guess was", guess
-
+    
+    # checks if the input guess is in the range
     if (upper_limit == 100) and (guess < 0 or guess > 99):
         print "Allowed range is 0-99! Try again\n"
         return
@@ -67,11 +67,13 @@ def input_guess(guess):
         number_of_guesses = number_of_guesses - 1        
         print "Number of remaining guesses is", number_of_guesses
         print "Lower!\n"
+        # calls the helper function to check for remaining guesses
         remaining_guesses()
     if secret_number > guess:
         number_of_guesses = number_of_guesses - 1        
         print "Number of remaining guesses is", number_of_guesses
         print "Higher!\n"
+        # calls the helper function to check for remaining guesses
         remaining_guesses()
     if secret_number == guess:
         print "Correct!\n"
