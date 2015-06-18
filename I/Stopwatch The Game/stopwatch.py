@@ -15,16 +15,20 @@ def format(t):
 def tick():
     global time
     time += 1
-    print time
+#    print time
 
 # define draw handler
-
+def draw_time(canvas):
+    global time
+    time_canvas = str(time)
+    canvas.draw_text(time_canvas, (140, 110), 24, 'White')
+    
     
 # create frame
 frame = simplegui.create_frame("Stopwatch: The Game", 300, 200)
 
 # register event handlers
-
+frame.set_draw_handler(draw_time)
 
 # create a timer with 100 ms interval
 timer = simplegui.create_timer(100, tick)
