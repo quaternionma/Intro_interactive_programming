@@ -8,7 +8,29 @@ canvas_height = 150
 # define helper function format that converts time
 # in tenths of seconds into formatted string A:BC.D
 def format(t):
-    pass
+    tenths = t % 10
+    seconds = (t % 600)/10 
+    minutes = t / 600
+    
+#    print 'tenth', tenths
+#    print 'seconds', seconds
+#    print 'minutes', minutes
+
+    # Gens leading zero if length of string is 1
+    if len(str(seconds)) == 1:
+        con_seconds = '0' + str(seconds)
+    else:
+        con_seconds = str(seconds)
+
+    if len(str(minutes)) == 1:
+        con_minutes = '0' + str(minutes)
+    else:
+        con_minutes = str(minutes)    
+    
+    # Formats the string to draw on the canvas
+    format_time = str(con_minutes) + ':' + str(con_seconds) + '.' + str(tenths)
+    return format_time
+        
     
 # define event handlers for buttons; "Start", "Stop", "Reset"
 def start():
@@ -29,15 +51,14 @@ def tick():
 
 # define draw handler
 def draw_time(canvas):
-    global time
-    time_canvas = str(time)
-    
+    format_time = format(time)
+  
     # gets the textwidth drawn on the canvas in order to center the text
-    textwidth = frame.get_canvas_textwidth(time_canvas, 32, 'sans-serif')
+    textwidth = frame.get_canvas_textwidth(format_time, 32, 'sans-serif')
     text_center = textwidth / 2
     
     # draws the text on canvas
-    canvas.draw_text(time_canvas, ((canvas_width/2) - text_center, 90), 32, 'White', 'sans-serif')
+    canvas.draw_text(format_time, ((canvas_width/2) - text_center, 90), 32, 'White', 'sans-serif')
     
     
 # create frame
