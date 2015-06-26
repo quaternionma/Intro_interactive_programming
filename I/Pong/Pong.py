@@ -19,7 +19,7 @@ RIGHT = True
 def spawn_ball(direction):
     global ball_pos, ball_vel # these are vectors stored as lists
     ball_pos = [WIDTH / 2, HEIGHT / 2]
-    #ball_vel = [-1,5]
+    
     if direction == LEFT:
         ball_vel = [-(random.randrange(120,240))/60, -(random.randrange(60,180))/60]
     elif direction == RIGHT:
@@ -43,12 +43,13 @@ def draw(canvas):
     canvas.draw_line([PAD_WIDTH, 0],[PAD_WIDTH, HEIGHT], 1, "White")
     canvas.draw_line([WIDTH - PAD_WIDTH, 0],[WIDTH - PAD_WIDTH, HEIGHT], 1, "White")
     
-    # update ball
+    # collisional chel with upper and lower wall
     if ball_pos[1] <= BALL_RADIUS:
         ball_vel[1] = -ball_vel[1]
     elif ball_pos[1] >= (HEIGHT - 1) - BALL_RADIUS:
         ball_vel[1] = -ball_vel[1]
-         
+    
+    # update ball     
     ball_pos[0] += ball_vel[0]; ball_pos[1] += ball_vel[1]
                    
     # draw ball
