@@ -86,10 +86,19 @@ def draw(canvas):
     canvas.draw_polygon([upper_left2, upper_right2, lower_right2, lower_left2], 1, 'White', 'White')
     
     # determine whether paddle and ball collide    
-    if ball_pos[0] <= BALL_RADIUS + PAD_WIDTH:
+    paddle1_ball_coll = (ball_pos[1] >= (paddle1_pos[1] - HALF_PAD_HEIGHT)) and (ball_pos[1] <= (paddle1_pos[1] + HALF_PAD_HEIGHT))
+    ball_gutter1_coll = ball_pos[0] <= (BALL_RADIUS + PAD_WIDTH)
+    if ball_gutter1_coll and paddle1_ball_coll:
+        ball_vel[0] = -ball_vel[0]
+    elif ball_gutter1_coll:
         score2 += 1
         spawn_ball(RIGHT)
-    elif ball_pos[0] >= (WIDTH - 1) - PAD_WIDTH - BALL_RADIUS:
+    
+    paddle2_ball_coll = (ball_pos[1] >= (paddle2_pos[1] - HALF_PAD_HEIGHT)) and (ball_pos[1] <= (paddle2_pos[1] + HALF_PAD_HEIGHT))
+    ball_gutter2_coll = ball_pos[0] >= (WIDTH - 1) - PAD_WIDTH - BALL_RADIUS    
+    if ball_gutter2_coll and  paddle2_ball_coll:
+        ball_vel[0] = -ball_vel[0]
+    elif ball_gutter2_coll:
         score1 += 1
         spawn_ball(LEFT)
     
