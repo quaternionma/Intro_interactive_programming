@@ -16,15 +16,21 @@ RIGHT = True
 
 # initialize ball_pos and ball_vel for new bal in middle of table
 # if direction is RIGHT, the ball's velocity is upper right, else upper left
-def spawn_ball():
+def spawn_ball(direction):
     global ball_pos, ball_vel # these are vectors stored as lists
     ball_pos = [WIDTH / 2, HEIGHT / 2]
-    ball_vel = [-1, -0.5]
+    
+    if direction == LEFT:
+        ball_vel = [-(random.randrange(120,240))/60, -(random.randrange(60,180))/60]
+    elif direction == RIGHT:
+        ball_vel = [(random.randrange(120,240))/60, -(random.randrange(60,180))/60]
+        
 # define event handlers
 def new_game():
     global paddle1_pos, paddle2_pos, paddle1_vel, paddle2_vel  # these are numbers
     global score1, score2  # these are ints
-    spawn_ball()
+    direction = random.choice([LEFT, RIGHT])
+    spawn_ball(direction)
 
 def draw(canvas):
     global score1, score2, paddle1_pos, paddle2_pos, ball_pos, ball_vel
