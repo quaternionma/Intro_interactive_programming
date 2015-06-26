@@ -48,20 +48,26 @@ def draw(canvas):
         ball_vel[1] = -ball_vel[1]
     elif ball_pos[1] >= (HEIGHT - 1) - BALL_RADIUS:
         ball_vel[1] = -ball_vel[1]
-    
-    if ball_pos[0] <= BALL_RADIUS + PAD_WIDTH:
-        score2 += 1
-        spawn_ball(RIGHT)
-    elif ball_pos[0] >= (WIDTH - 1) - PAD_WIDTH - BALL_RADIUS:
-        score1 += 1
-        spawn_ball(LEFT)
-        
-    ball_pos[0] += ball_vel[0]
-    ball_pos[1] += ball_vel[1]        
-       
+         
+    ball_pos[0] += ball_vel[0]; ball_pos[1] += ball_vel[1]
+                   
     # draw ball
     canvas.draw_circle(ball_pos, BALL_RADIUS, 2, "Red", "White")
+    
     # update paddle's vertical position, keep paddle on the screen
+    if (paddle1_pos[1] >= HALF_PAD_HEIGHT) and (paddle1_pos[1] <= (HEIGHT - 1) - HALF_PAD_HEIGHT):
+        paddle1_pos[1] += paddle1_vel
+    elif paddle1_pos[1] < HALF_PAD_HEIGHT:
+        paddle1_pos[1] = HALF_PAD_HEIGHT
+    elif paddle1_pos[1] > (HEIGHT - 1) - HALF_PAD_HEIGHT:
+        paddle1_pos[1] = (HEIGHT - 1) - HALF_PAD_HEIGHT
+    
+    if (paddle2_pos[1] >= HALF_PAD_HEIGHT) and (paddle2_pos[1] <= (HEIGHT - 1) - HALF_PAD_HEIGHT):
+        paddle2_pos[1] += paddle2_vel
+    elif paddle2_pos[1] < HALF_PAD_HEIGHT:
+        paddle2_pos[1] = HALF_PAD_HEIGHT
+    elif paddle2_pos[1] > (HEIGHT - 1) - HALF_PAD_HEIGHT:
+        paddle2_pos[1] = (HEIGHT - 1) - HALF_PAD_HEIGHT
     
     # draw paddles
     paddle1_pos[1] += paddle1_vel
@@ -76,8 +82,16 @@ def draw(canvas):
     upper_right2 = ((paddle2_pos[0] + HALF_PAD_WIDTH), (paddle2_pos[1] - HALF_PAD_HEIGHT))
     lower_left2 = ((paddle2_pos[0] - HALF_PAD_WIDTH), (paddle2_pos[1] + HALF_PAD_HEIGHT))
     lower_right2 = ((paddle2_pos[0] + HALF_PAD_WIDTH), (paddle2_pos[1] + HALF_PAD_HEIGHT))
+    
     canvas.draw_polygon([upper_left2, upper_right2, lower_right2, lower_left2], 1, 'White', 'White')
+    
     # determine whether paddle and ball collide    
+    if ball_pos[0] <= BALL_RADIUS + PAD_WIDTH:
+        score2 += 1
+        spawn_ball(RIGHT)
+    elif ball_pos[0] >= (WIDTH - 1) - PAD_WIDTH - BALL_RADIUS:
+        score1 += 1
+        spawn_ball(LEFT)
     
     # draw scores
     canvas.draw_text(str(score1), (180, 80), 70, 'Gray', 'monospace')    
@@ -107,6 +121,7 @@ def keyup(key):
         paddle2_vel -= vel_increment
     elif key==simplegui.KEY_MAP["up"]:
         paddle2_vel += vel_increment
+
 def restar_button():
     new_game()
     
