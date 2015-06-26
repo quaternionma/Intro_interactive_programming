@@ -90,6 +90,7 @@ def draw(canvas):
     ball_gutter1_coll = ball_pos[0] <= (BALL_RADIUS + PAD_WIDTH)
     if ball_gutter1_coll and paddle1_ball_coll:
         ball_vel[0] = -ball_vel[0]
+        ball_vel = [ball_vel[0] * 1.10, ball_vel[1] * 1.10]
     elif ball_gutter1_coll:
         score2 += 1
         spawn_ball(RIGHT)
@@ -98,6 +99,7 @@ def draw(canvas):
     ball_gutter2_coll = ball_pos[0] >= (WIDTH - 1) - PAD_WIDTH - BALL_RADIUS    
     if ball_gutter2_coll and  paddle2_ball_coll:
         ball_vel[0] = -ball_vel[0]
+        ball_vel = [ball_vel[0] * 1.10, ball_vel[1] * 1.10]
     elif ball_gutter2_coll:
         score1 += 1
         spawn_ball(LEFT)
