@@ -60,16 +60,28 @@ def draw(canvas):
     # draw ball
     canvas.draw_circle(ball_pos, BALL_RADIUS, 2, "Red", "White")
     # update paddle's vertical position, keep paddle on the screen
+    if (paddle1_pos[1] >= HALF_PAD_HEIGHT) and (paddle1_pos[1] <= (HEIGHT - 1) - HALF_PAD_HEIGHT):
+        paddle1_pos[1] += paddle1_vel
+    elif paddle1_pos[1] < HALF_PAD_HEIGHT:
+        paddle1_pos[1] = HALF_PAD_HEIGHT
+    elif paddle1_pos[1] > (HEIGHT - 1) - HALF_PAD_HEIGHT:
+        paddle1_pos[1] = (HEIGHT - 1) - HALF_PAD_HEIGHT
+    
+    if (paddle2_pos[1] >= HALF_PAD_HEIGHT) and (paddle2_pos[1] <= (HEIGHT - 1) - HALF_PAD_HEIGHT):
+        paddle2_pos[1] += paddle2_vel
+    elif paddle2_pos[1] < HALF_PAD_HEIGHT:
+        paddle2_pos[1] = HALF_PAD_HEIGHT
+    elif paddle2_pos[1] > (HEIGHT - 1) - HALF_PAD_HEIGHT:
+        paddle2_pos[1] = (HEIGHT - 1) - HALF_PAD_HEIGHT    
+    
     
     # draw paddles
-    paddle1_pos[1] += paddle1_vel
     upper_left1 = ((paddle1_pos[0] - HALF_PAD_WIDTH), (paddle1_pos[1] - HALF_PAD_HEIGHT))
     upper_right1 = ((paddle1_pos[0] + HALF_PAD_WIDTH), (paddle1_pos[1] - HALF_PAD_HEIGHT))
     lower_left1 = ((paddle1_pos[0] - HALF_PAD_WIDTH), (paddle1_pos[1] + HALF_PAD_HEIGHT))
     lower_right1 = ((paddle1_pos[0] + HALF_PAD_WIDTH), (paddle1_pos[1] + HALF_PAD_HEIGHT))
     canvas.draw_polygon([upper_left1, upper_right1, lower_right1, lower_left1], 1, 'White', 'White')
-   
-    paddle2_pos[1] += paddle2_vel
+  
     upper_left2 = ((paddle2_pos[0] - HALF_PAD_WIDTH), (paddle2_pos[1] - HALF_PAD_HEIGHT))
     upper_right2 = ((paddle2_pos[0] + HALF_PAD_WIDTH), (paddle2_pos[1] - HALF_PAD_HEIGHT))
     lower_left2 = ((paddle2_pos[0] - HALF_PAD_WIDTH), (paddle2_pos[1] + HALF_PAD_HEIGHT))
