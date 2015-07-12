@@ -12,6 +12,7 @@ canvas_h = CARD_HEIGTH
 EXPOSED = True
 NOT_EXPOSED = False
 turn = 0
+
 # helper function to initialize globals
 def new_game():
     global deck, exposed, state, clicked_idx_store, turn
@@ -26,20 +27,24 @@ def new_game():
     exposed = [NOT_EXPOSED] * NUMBER_OF_CARDS
     random.shuffle(deck)
     label.set_text("Turns = " + str(turn))
-# define event handlers
+
+    # define event handlers
 def mouseclick(pos):
-    # add game state logic here
+    # returns the index of the card clicked
     def is_clicked(card):
         return ((pos[0] >= (card - x_card)) and (pos[0] < (card + x_card)))
+    
     clicked = filter(is_clicked, x_pos)
     clicked_idx = x_pos.index(clicked[0])
 
+    # mai game logic
     global state, clicked_idx_store, turn
     if not exposed[clicked_idx]:
         exposed[clicked_idx] = EXPOSED
         if state == 0:
             state = 1
-            clicked_idx_store[0] = clicked_idx
+            # uses a two elements list to store card index
+            clicked_idx_store[0] = clicked_idx 
         elif state == 1:
             state = 2
             clicked_idx_store[1] = clicked_idx        
@@ -51,9 +56,11 @@ def mouseclick(pos):
             clicked_idx_store[0] = clicked_idx
             turn += 1
             label.set_text("Turns = " + str(turn))
+
 # cards are logically 50x100 pixels in size    
 def draw(canvas):
     global x_pos
+    # generates a list with x positions of the card centers
     x_pos=range(25, 776, 50)
     ind_pos = 0
     ind_exp = 0
