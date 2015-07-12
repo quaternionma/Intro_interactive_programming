@@ -19,7 +19,6 @@ def new_game():
     deck_1.extend(deck_2)
     deck = deck_1
     exposed = [True,False] * 8
-    random.shuffle(exposed)
     random.shuffle(deck)
 
      
@@ -39,7 +38,7 @@ def draw(canvas):
         canvas.draw_text(str(card_number), (x_pos[ind_pos] - (num_width / 2), 65), 50, 'Gray', 'sans-serif')
         ind_pos += 1
     for card_stat in exposed:
-        if card_stat:
+        if  not card_stat:
             left = x_pos[ind_exp] - x_card
             right = x_pos[ind_exp] + x_card
             canvas.draw_polygon([[left, 0], [right, 0], [right, 100], [left, 100]], 3, 'Green', 'Green')
