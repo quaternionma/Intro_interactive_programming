@@ -28,7 +28,11 @@ def mouseclick(pos):
     def is_clicked(card):
         return ((pos[0] >= (card - x_card)) and (pos[0] < (card + x_card)))
     clicked = filter(is_clicked, x_pos)
-    print x_pos.index(clicked[0])
+    clicked_idx = x_pos.index(clicked[0])
+    print clicked_idx
+    
+    if not exposed[clicked_idx]:
+        exposed[clicked_idx] = True
     
                         
 # cards are logically 50x100 pixels in size    
