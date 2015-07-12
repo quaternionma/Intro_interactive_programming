@@ -25,24 +25,31 @@ def new_game():
 # define event handlers
 def mouseclick(pos):
     # add game state logic here
-    pass
+    def is_clicked(card):
+        return ((pos[0] >= (card - x_card)) and (pos[0] < (card + x_card)))
+    clicked = filter(is_clicked, x_pos)
+    print x_pos.index(clicked[0])
     
                         
 # cards are logically 50x100 pixels in size    
 def draw(canvas):
+    global x_pos
     x_pos=range(25, 776, 50)
     ind_pos = 0
     ind_exp = 0
+    
     for card_number in deck:
         num_width = frame.get_canvas_textwidth(str(card_number), 40, 'sans-serif')
         canvas.draw_text(str(card_number), (x_pos[ind_pos] - (num_width / 2), 65), 50, 'Gray', 'sans-serif')
         ind_pos += 1
+    
     for card_stat in exposed:
         if  not card_stat:
             left = x_pos[ind_exp] - x_card
             right = x_pos[ind_exp] + x_card
             canvas.draw_polygon([[left, 0], [right, 0], [right, 100], [left, 100]], 3, 'Green', 'Green')
         ind_exp += 1
+
 # create frame and add a button and labels
 frame = simplegui.create_frame("Memory", canvas_w, canvas_h)
 frame.add_button("Reset", new_game)
