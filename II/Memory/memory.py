@@ -11,19 +11,21 @@ canvas_w = CARD_WIDTH * NUMBER_OF_CARDS
 canvas_h = CARD_HEIGTH
 EXPOSED = True
 NOT_EXPOSED = False
-
+turn = 0
 # helper function to initialize globals
 def new_game():
-    global deck, exposed, state, clicked_idx_store
+    global deck, exposed, state, clicked_idx_store, turn
     state = 0
     clicked_idx_store = [None, None]
+    turn = 0
+    label.set_text("Turns = " + str(turn))
     deck_1 = range(8)
     deck_2 = range(8)
     deck_1.extend(deck_2)
     deck = deck_1
-    exposed = [NOT_EXPOSED] * 16
+    exposed = [NOT_EXPOSED] * NUMBER_OF_CARDS
     random.shuffle(deck)
-    
+    label.set_text("Turns = " + str(turn))
 # define event handlers
 def mouseclick(pos):
     # add game state logic here
@@ -32,7 +34,7 @@ def mouseclick(pos):
     clicked = filter(is_clicked, x_pos)
     clicked_idx = x_pos.index(clicked[0])
 
-    global state, clicked_idx_store
+    global state, clicked_idx_store, turn
     if not exposed[clicked_idx]:
         exposed[clicked_idx] = EXPOSED
         if state == 0:
@@ -47,7 +49,8 @@ def mouseclick(pos):
                 exposed[clicked_idx_store[0]] = NOT_EXPOSED
                 exposed[clicked_idx_store[1]] = NOT_EXPOSED
             clicked_idx_store[0] = clicked_idx
-
+            turn += 1
+            label.set_text("Turns = " + str(turn))
 # cards are logically 50x100 pixels in size    
 def draw(canvas):
     global x_pos
@@ -70,7 +73,7 @@ def draw(canvas):
 # create frame and add a button and labels
 frame = simplegui.create_frame("Memory", canvas_w, canvas_h)
 frame.add_button("Reset", new_game)
-label = frame.add_label("Turns = 0")
+label = frame.add_label("Turns = " + str(turn))
 
 # register event handlers
 frame.set_mouseclick_handler(mouseclick)
