@@ -31,10 +31,7 @@ def new_game():
     # define event handlers
 def mouseclick(pos):
     # returns the index of the card clicked
-    def is_clicked(card):
-        return ((pos[0] >= (card - x_card)) and (pos[0] < (card + x_card)))
-    
-    clicked = filter(is_clicked, x_pos)
+    clicked = filter(lambda card: ((pos[0] >= (card - x_card)) and (pos[0] < (card + x_card))), x_pos)
     clicked_idx = x_pos.index(clicked[0])
 
     # mai game logic
