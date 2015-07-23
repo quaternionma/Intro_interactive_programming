@@ -51,13 +51,16 @@ class Card:
 # define hand class
 class Hand:
     def __init__(self):
-        pass	# create Hand object
+        self.hand = []	# create Hand object
 
-    def __str__(self):
-        pass	# return a string representation of a hand
-
+    def __str__(self):   # return a string representation of a hand
+        message = "Hand contains"
+        for i in range(len(self.hand)):
+            message += (" " + str(self.hand[i]))
+        return message     
+    
     def add_card(self, card):
-        pass	# add a card object to a hand
+        self.hand.append(card)        	# add a card object to a hand
 
     def get_value(self):
         # count aces as 1, if the hand has an ace, then add 10 to hand value if it doesn't bust
