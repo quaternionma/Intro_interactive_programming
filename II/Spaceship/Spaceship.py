@@ -99,7 +99,8 @@ class Ship:
     def draw(self,canvas):
         if self.thrust == False:
             canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, self.angle)
-            ship_thrust_sound.rewind()       
+            ship_thrust_sound.rewind()
+            
         elif self.thrust == True:
             canvas.draw_image(self.image, (self.image_center[0] + self.image_size[0], self.image_center[1]), self.image_size, self.pos, self.image_size, self.angle)
             ship_thrust_sound.play()
@@ -123,6 +124,14 @@ class Ship:
     def thrust_control(self, status):
         self.thrust = status
         
+    def shoot(self):
+        global a_missile
+        print self.radius
+        forward = angle_to_vector(self.angle)
+        ship_tip = (self.pos[0] + (forward[0] * self.radius), self.pos[1] + (forward[1] * self.radius))
+        missile_vel = (self.vel[0] + 6 * forward[0], self.vel[1] + 4 * forward[1])
+        a_missile = Sprite(ship_tip, missile_vel, 0, 0, missile_image, missile_info, missile_sound)
+        
         
     
 # Sprite class
@@ -145,7 +154,7 @@ class Sprite:
    
     def draw(self, canvas):
         canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, self.angle) 
-    
+        
     def update(self):
         self.angle += self.angle_vel
         self.pos[0] += self.vel[0]
@@ -184,7 +193,8 @@ def keydown(key):
         my_ship.rotate(0.1)
     elif key == simplegui.KEY_MAP["up"]:        
         my_ship.thrust_control(True)
-        
+    elif key == simplegui.KEY_MAP["space"]:    
+        my_ship.shoot()
 def keyup(key):
     if key == simplegui.KEY_MAP["left"]:
         my_ship.rotate(+0.1)
