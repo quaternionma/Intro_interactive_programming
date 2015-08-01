@@ -97,13 +97,19 @@ class Ship:
         self.radius = info.get_radius()
         
     def draw(self,canvas):
-        canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, self.angle)
+        if self.thrust == False:
+            canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, self.angle)
+        elif self.thrust == True:
+            canvas.draw_image(self.image, (self.image_center[0] + self.image_size[0], self.image_center[1]), self.image_size, self.pos, self.image_size, self.angle)            
     def update(self):
         self.pos[0] += self.vel[0]
         self.pos[1] += self.vel[1]
         self.angle += self.angle_vel
     def rotate(self, angle_vel):
         self.angle_vel += angle_vel
+    def thrust_control(self, status):
+        self.thrust = status
+        
         
     
 # Sprite class
@@ -155,16 +161,20 @@ def draw(canvas):
 
 # key handler
 def keydown(key):
-    if key==simplegui.KEY_MAP["left"]:
+    if key == simplegui.KEY_MAP["left"]:
         my_ship.rotate(-0.1)
-    elif key==simplegui.KEY_MAP["right"]:
+    elif key == simplegui.KEY_MAP["right"]:
         my_ship.rotate(0.1)
+    elif key == simplegui.KEY_MAP["up"]:        
+        my_ship.thrust_control(True)
+        
 def keyup(key):
-    if key==simplegui.KEY_MAP["left"]:
+    if key == simplegui.KEY_MAP["left"]:
         my_ship.rotate(+0.1)
-    elif key==simplegui.KEY_MAP["right"]:
+    elif key == simplegui.KEY_MAP["right"]:
         my_ship.rotate(-0.1)
-
+    elif key == simplegui.KEY_MAP["up"]:
+        my_ship.thrust_control(False)
 # timer handler that spawns a rock    
 def rock_spawner():
     pass
