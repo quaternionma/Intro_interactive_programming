@@ -187,9 +187,9 @@ def draw(canvas):
     
     # draw UI
     lives_ui = "Lives: " + str(lives)
-    canvas.draw_text(lives_ui, (WIDTH-90, 30), 20, 'White')
+    canvas.draw_text(lives_ui, (25, 30), 20, 'White')
     score_ui = "Score: " + str(score)
-    canvas.draw_text(score_ui, (WIDTH-90, 60), 20, 'White')
+    canvas.draw_text(score_ui, (WIDTH-90, 30), 20, 'White')
     
 # key handler
 def keydown(key):
