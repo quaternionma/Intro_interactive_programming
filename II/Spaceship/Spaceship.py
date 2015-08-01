@@ -129,7 +129,7 @@ class Ship:
         print self.radius
         forward = angle_to_vector(self.angle)
         ship_tip = (self.pos[0] + (forward[0] * self.radius), self.pos[1] + (forward[1] * self.radius))
-        missile_vel = (self.vel[0] + 6 * forward[0], self.vel[1] + 4 * forward[1])
+        missile_vel = (self.vel[0] + 6 * forward[0], self.vel[1] + 6 * forward[1])
         a_missile = Sprite(ship_tip, missile_vel, 0, 0, missile_image, missile_info, missile_sound)
         
         
@@ -184,7 +184,13 @@ def draw(canvas):
     my_ship.update()
     a_rock.update()
     a_missile.update()
-
+    
+    # draw UI
+    lives_ui = "Lives: " + str(lives)
+    canvas.draw_text(lives_ui, (WIDTH-90, 30), 20, 'White')
+    score_ui = "Score: " + str(score)
+    canvas.draw_text(score_ui, (WIDTH-90, 60), 20, 'White')
+    
 # key handler
 def keydown(key):
     if key == simplegui.KEY_MAP["left"]:
