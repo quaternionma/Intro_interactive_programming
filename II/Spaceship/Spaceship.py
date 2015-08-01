@@ -99,8 +99,10 @@ class Ship:
     def draw(self,canvas):
         if self.thrust == False:
             canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, self.angle)
+            ship_thrust_sound.rewind()       
         elif self.thrust == True:
-            canvas.draw_image(self.image, (self.image_center[0] + self.image_size[0], self.image_center[1]), self.image_size, self.pos, self.image_size, self.angle)            
+            canvas.draw_image(self.image, (self.image_center[0] + self.image_size[0], self.image_center[1]), self.image_size, self.pos, self.image_size, self.angle)
+            ship_thrust_sound.play()
     def update(self):
         self.pos[0] += self.vel[0]
         self.pos[1] += self.vel[1]
