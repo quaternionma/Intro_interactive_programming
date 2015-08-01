@@ -95,6 +95,7 @@ class Ship:
         self.image_center = info.get_center()
         self.image_size = info.get_size()
         self.radius = info.get_radius()
+    
     def draw(self,canvas):
         if self.thrust == False:
             canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, self.angle)
@@ -102,6 +103,7 @@ class Ship:
         elif self.thrust == True:
             canvas.draw_image(self.image, (self.image_center[0] + self.image_size[0], self.image_center[1]), self.image_size, self.pos, self.image_size, self.angle)
             ship_thrust_sound.play()
+    
     def update(self):
         self.pos[0] += self.vel[0]
         self.pos[0] = self.pos[0] % WIDTH
@@ -114,8 +116,10 @@ class Ship:
             self.vel[1] += forward[1] * 0.15
         self.vel[0] *= 0.97
         self.vel[1] *= 0.97
+    
     def rotate(self, angle_vel):
         self.angle_vel += angle_vel
+    
     def thrust_control(self, status):
         self.thrust = status
         
@@ -140,10 +144,14 @@ class Sprite:
             sound.play()
    
     def draw(self, canvas):
-        canvas.draw_circle(self.pos, self.radius, 1, "Red", "Red")
+        canvas.draw_image(self.image, self.image_center, self.image_size, self.pos, self.image_size, self.angle) 
     
     def update(self):
-        pass        
+        self.angle += self.angle_vel
+        self.pos[0] += self.vel[0]
+        self.pos[1] += self.vel[1]
+        self.pos[0] = self.pos[0] % WIDTH
+        self.pos[1] = self.pos[1] % HEIGHT
 
            
 def draw(canvas):
@@ -186,14 +194,19 @@ def keyup(key):
         my_ship.thrust_control(False)
 # timer handler that spawns a rock    
 def rock_spawner():
-    pass
-    
+    global a_rock
+    pos = (random.randrange(45, (WIDTH-45)), random.randrange(45, (HEIGHT-45)))
+    vel = (float(random.randint(-250, 250)) / 100, float(random.randint(-250, 250)) / 100)
+    ang = random.random() * 6.28 + 0
+    ang_vel_list = (float(random.randrange(-7, 0)) / 100, float(random.randrange(1, 8)) / 100)
+    ang_vel = random.choice(ang_vel_list)
+    a_rock = Sprite(pos, vel, ang, ang_vel, asteroid_image, asteroid_info)
 # initialize frame
 frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
 
 # initialize ship and two sprites
 my_ship = Ship([WIDTH / 2, HEIGHT / 2], [0, 0], 0, ship_image, ship_info)
-a_rock = Sprite([WIDTH / 3, HEIGHT / 3], [1, 1], 0, 0, asteroid_image, asteroid_info)
+a_rock = Sprite([WIDTH / 3, HEIGHT / 3], [0, 1], 0, -0.03, asteroid_image, asteroid_info)
 a_missile = Sprite([2 * WIDTH / 3, 2 * HEIGHT / 3], [-1,1], 0, 0, missile_image, missile_info, missile_sound)
 
 # register handlers
