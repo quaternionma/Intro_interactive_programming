@@ -173,10 +173,10 @@ class Ship:
             ship_thrust_sound.pause()
        
     def increment_angle_vel(self):
-        self.angle_vel += .05
+        self.angle_vel += .07
         
     def decrement_angle_vel(self):
-        self.angle_vel -= .05
+        self.angle_vel -= .07
         
     def shoot(self):
         global missile_group
@@ -337,8 +337,8 @@ def draw(canvas):
 def rock_spawner():
     global rock_group
     rock_pos = [random.randrange(0, WIDTH), random.randrange(0, HEIGHT)]
-    rock_vel = [random.random() * .6 - .3, random.random() * .6 - .3]
-    rock_avel = random.random() * .2 - .1
+    rock_vel = [random.random() * .9 - .2, random.random() * .9 - .2]
+    rock_avel = random.random() * .08 - .03
     a_rock = Sprite(rock_pos, rock_vel, 0, rock_avel, asteroid_image, asteroid_info)
     if len(rock_group) < 12 and (dist(rock_pos, my_ship.get_position()) > (a_rock.get_radius() + my_ship.get_radius() + 15)):
         rock_group.add(a_rock)
