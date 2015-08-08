@@ -325,7 +325,7 @@ def rock_spawner():
     rock_vel = [random.random() * .6 - .3, random.random() * .6 - .3]
     rock_avel = random.random() * .2 - .1
     a_rock = Sprite(rock_pos, rock_vel, 0, rock_avel, asteroid_image, asteroid_info)
-    if len(rock_group) < 12:
+    if len(rock_group) < 12 and (dist(rock_pos, my_ship.get_position()) > (a_rock.get_radius() + my_ship.get_radius() + 15)):
         rock_group.add(a_rock)
     if lives == 0:
         timer.stop()
