@@ -348,5 +348,5 @@ frame.set_draw_handler(draw)
 timer = simplegui.create_timer(1000.0, rock_spawner)
 
 # get things rolling
-timer.start()
+#timer.start()
 frame.start()
