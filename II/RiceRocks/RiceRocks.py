@@ -98,8 +98,6 @@ def group_collide(group, other_object):
         if sprite.collide(other_object):
             group_remove.add(sprite)
             collision = True
-        else:
-            collision = False
     group.difference_update(group_remove)
     return collision
         
