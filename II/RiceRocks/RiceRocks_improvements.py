@@ -337,7 +337,8 @@ def draw(canvas):
 def rock_spawner():
     global rock_group
     rock_pos = [random.randrange(0, WIDTH), random.randrange(0, HEIGHT)]
-    rock_vel = [random.random() * .9 - .2, random.random() * .9 - .2]
+    #rock_vel = [random.random() * .9 - .2, random.random() * .9 - .2]
+    rock_vel = (float(random.randint(-100, 100)) / 100, float(random.randint(-100, 100)) / 100)
     rock_avel = random.random() * .08 - .03
     a_rock = Sprite(rock_pos, rock_vel, 0, rock_avel, asteroid_image, asteroid_info)
     if len(rock_group) < 12 and (dist(rock_pos, my_ship.get_position()) > (a_rock.get_radius() + my_ship.get_radius() + 15)):
