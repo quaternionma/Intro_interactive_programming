@@ -96,7 +96,7 @@ def process_sprite_group(group, canvas):
     group.difference_update(missile_remove)
         
 
-# helper function to check for collisions between groups of objects
+# helper function to check for collisions between groups of objects and a single object
 def group_collide(group, other_object):
     group_remove = set()
     collision = False
@@ -106,7 +106,18 @@ def group_collide(group, other_object):
             collision = True
     group.difference_update(group_remove)
     return collision
-        
+
+# helper function to check for collisions between groups of objects
+def group_group_collide(a_group, another_group):
+    a_group_copy = set(a_group)
+    collision_count = 0
+    for a_sprite in a_group_copy:
+        if group_collide(another_group, a_sprite):
+            collision_count += 1
+            a_group.discard(a_sprite)
+    return collision_count        
+             
+
 # Ship class
 class Ship:
 
@@ -257,7 +268,7 @@ def click(pos):
         started = True
 
 def draw(canvas):
-    global time, started, lives
+    global time, started, lives, score
     
     # animiate background
     time += 1
@@ -292,6 +303,11 @@ def draw(canvas):
     # Check for collisions between Ship and Rocks
     if group_collide(rock_group, my_ship):
         lives -= 1
+        
+    # Check for collisions between Missiles and Rocks
+    if group_group_collide(missile_group, rock_group):
+        score += 1
+      
 
 # timer handler that spawns a rock    
 def rock_spawner():
