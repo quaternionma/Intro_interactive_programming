@@ -177,8 +177,9 @@ class Ship:
         forward = angle_to_vector(self.angle)
         missile_pos = [self.pos[0] + self.radius * forward[0], self.pos[1] + self.radius * forward[1]]
         missile_vel = [self.vel[0] + 6 * forward[0], self.vel[1] + 6 * forward[1]]
-        a_missile = Sprite(missile_pos, missile_vel, self.angle, 0, missile_image, missile_info, missile_sound)
-        missile_group.add(a_missile)
+        if started:
+            a_missile = Sprite(missile_pos, missile_vel, self.angle, 0, missile_image, missile_info, missile_sound)
+            missile_group.add(a_missile)
     
     def get_position(self):
         return self.pos
@@ -259,16 +260,21 @@ def keyup(key):
         
 # mouseclick handlers that reset UI and conditions whether splash image is drawn
 def click(pos):
-    global started
+    global started, score, lives
     center = [WIDTH / 2, HEIGHT / 2]
     size = splash_info.get_size()
     inwidth = (center[0] - size[0] / 2) < pos[0] < (center[0] + size[0] / 2)
     inheight = (center[1] - size[1] / 2) < pos[1] < (center[1] + size[1] / 2)
     if (not started) and inwidth and inheight:
         started = True
+        score = 0
+        lives = 3
+        soundtrack.rewind()
+        soundtrack.play()
+        timer.start()
 
 def draw(canvas):
-    global time, started, lives, score
+    global time, started, lives, score, rock_group
     
     # animiate background
     time += 1
@@ -307,8 +313,11 @@ def draw(canvas):
     # Check for collisions between Missiles and Rocks
     if group_group_collide(missile_group, rock_group):
         score += 1
+        
+    if lives == 0:
+        started = False
+        rock_group = set()
       
-
 # timer handler that spawns a rock    
 def rock_spawner():
     global rock_group
@@ -318,6 +327,8 @@ def rock_spawner():
     a_rock = Sprite(rock_pos, rock_vel, 0, rock_avel, asteroid_image, asteroid_info)
     if len(rock_group) < 12:
         rock_group.add(a_rock)
+    if lives == 0:
+        timer.stop()
             
 # initialize stuff
 frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
