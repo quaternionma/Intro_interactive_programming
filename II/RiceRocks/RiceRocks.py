@@ -89,6 +89,19 @@ def process_sprite_group(group, canvas):
     for sprite in group:
         sprite.update()
         sprite.draw(canvas)
+
+# helper function to check for collisions between groups of objects
+def group_collide(group, other_object):
+    group_remove = set()
+    collision = False
+    for sprite in group:
+        if sprite.collide(other_object):
+            group_remove.add(sprite)
+            collision = True
+        else:
+            collision = False
+    group.difference_update(group_remove)
+    return collision
         
 # Ship class
 class Ship:
@@ -151,7 +164,11 @@ class Ship:
         missile_vel = [self.vel[0] + 6 * forward[0], self.vel[1] + 6 * forward[1]]
         a_missile = Sprite(missile_pos, missile_vel, self.angle, 0, missile_image, missile_info, missile_sound)
     
+    def get_position(self):
+        return self.pos
     
+    def get_radius(self):
+        return self.radius
     
 # Sprite class
 class Sprite:
@@ -182,7 +199,19 @@ class Sprite:
         # update position
         self.pos[0] = (self.pos[0] + self.vel[0]) % WIDTH
         self.pos[1] = (self.pos[1] + self.vel[1]) % HEIGHT
-  
+        
+    def get_position(self):
+        return self.pos
+    
+    def get_radius(self):
+        return self.radius
+    
+    def collide(self, other_object):
+        distance = math.sqrt((self.pos[0] - other_object.get_position()[0])**2 + (self.pos[1] - other_object.get_position()[1])**2)
+        if distance <= (self.radius + other_object.get_radius()):
+            return True
+        else:
+            return False
         
 # key handlers to control ship   
 def keydown(key):
@@ -214,7 +243,7 @@ def click(pos):
         started = True
 
 def draw(canvas):
-    global time, started
+    global time, started, lives
     
     # animiate background
     time += 1
@@ -237,8 +266,7 @@ def draw(canvas):
     a_missile.draw(canvas)
     
     # update ship and sprites
-    my_ship.update()
-    #a_rock.update()
+    my_ship.update()    
     a_missile.update()
 
     # draw splash screen if not started
@@ -246,6 +274,10 @@ def draw(canvas):
         canvas.draw_image(splash_image, splash_info.get_center(), 
                           splash_info.get_size(), [WIDTH / 2, HEIGHT / 2], 
                           splash_info.get_size())
+    
+    # Check for collisions between Ship and Rocks
+    if group_collide(rock_group, my_ship):
+        lives -= 1
 
 # timer handler that spawns a rock    
 def rock_spawner():
