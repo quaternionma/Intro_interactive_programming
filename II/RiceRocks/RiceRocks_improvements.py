@@ -11,6 +11,7 @@ lives = 3
 time = 0
 started = False
 high_score = set()
+explosion_group = set()
 
 class ImageInfo:
     def __init__(self, center, size, radius = 0, lifespan = None, animated = False):
@@ -104,6 +105,10 @@ def group_collide(group, other_object):
     for sprite in group:
         if sprite.collide(other_object):
             group_remove.add(sprite)
+            explosion = Sprite(sprite.get_position(), [0,0], 0, 0, explosion_image, explosion_info)
+            explosion_group.add(explosion)
+            explosion_sound.rewind()
+            explosion_sound.play()
             collision = True
     group.difference_update(group_remove)
     return collision
@@ -207,7 +212,13 @@ class Sprite:
             sound.play()
    
     def draw(self, canvas):
-        canvas.draw_image(self.image, self.image_center, self.image_size,
+        if self.animated:
+            explosion_index = self.age % self.lifespan
+            index_center = [self.image_center[0] + explosion_index * self.image_size[0], self.image_center[1]]
+            canvas.draw_image(self.image, index_center, self.image_size, self.pos,
+                          self.image_size, self.angle)          
+        else:
+            canvas.draw_image(self.image, self.image_center, self.image_size,
                           self.pos, self.image_size, self.angle)
 
     def update(self):
@@ -298,10 +309,10 @@ def draw(canvas):
     my_ship.draw(canvas)
     process_sprite_group(rock_group, canvas)
     process_sprite_group(missile_group, canvas)
+    process_sprite_group(explosion_group, canvas)
     
     # update ship and sprites
     my_ship.update()    
-
 
     # draw splash screen if not started
     if not started:
@@ -316,7 +327,7 @@ def draw(canvas):
     # Check for collisions between Missiles and Rocks
     if group_group_collide(missile_group, rock_group):
         score += 1
-        
+
     if lives == 0:
         started = False
         rock_group = set()
